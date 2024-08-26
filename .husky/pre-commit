@@ -1,0 +1,9 @@
+pnpm lintCheck || {
+  echo "ESLint Check Failed"
+  exit 1
+}
+
+pnpm prettierCheck || {
+  echo "Prettier Check Failed."
+  exit 1
+}
