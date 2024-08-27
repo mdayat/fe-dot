@@ -13,8 +13,11 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@firebase/app": "^0.10.9",
+    "@firebase/auth": "^1.7.7",
     "axios": "^1.7.5",
     "axios-retry": "^4.5.0",
+    "firebase-admin": "^12.4.0",
     "next": "14.2.6",
     "react": "^18",
     "react-dom": "^18"
