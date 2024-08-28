@@ -1,6 +1,7 @@
 import { extendBaseTheme, theme as chakraTheme } from "@chakra-ui/react";
 
-const { Button, Heading } = chakraTheme.components;
+const { Button, Heading, Avatar, Table, Alert, Skeleton, Spinner } =
+  chakraTheme.components;
 const theme = extendBaseTheme({
   config: {
     initialColorMode: "light",
@@ -9,6 +10,11 @@ const theme = extendBaseTheme({
   components: {
     Button,
     Heading,
+    Avatar,
+    Table,
+    Alert,
+    Skeleton,
+    Spinner,
   },
 });
 
