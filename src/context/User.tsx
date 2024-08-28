@@ -10,7 +10,7 @@ import {
 } from "react";
 import { Box, Spinner } from "@chakra-ui/react";
 
-import { auth } from "../libs/firebaseApp";
+import { auth } from "../libs/firebase";
 
 interface User {
   name: string;

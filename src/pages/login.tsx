@@ -10,7 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { auth } from "../libs/firebaseApp";
+import { auth } from "../libs/firebase";
 
 const provider = new GoogleAuthProvider();
 export default function Login() {

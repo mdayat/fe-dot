@@ -1,3 +1,7 @@
+## Overview
+
+A simple app to demonstrate conditional rendering, reusable components, reactivity, and authentication. I use https://jsonplaceholder.typicode.com/ to simulate network requests.
+
 ## Getting Started
 
 > This project uses pnpm as the package manager.
@@ -13,8 +17,6 @@ Install and run:
 ```bash
   pnpm install && pnpm dev
 ```
-
-> Before starting the project, you need to provide an environment variable, `API_KEY`. To get this API key, you can register on this app: https://rajaongkir.com/akun/daftar.
 
 To check if the code complies with best practices:
 

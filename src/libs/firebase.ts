@@ -11,7 +11,7 @@ const firebaseConfig = {
   measurementId: "G-6ZTTPVH51T",
 };
 
-const appName = "firebase-app";
+const appName = "firebase";
 let app: FirebaseApp;
 try {
   app = getApp(appName);

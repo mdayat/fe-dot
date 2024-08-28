@@ -3,7 +3,7 @@ import { Avatar, Box, Button, Stack } from "@chakra-ui/react";
 
 import { UserContext } from "../context/User";
 import { NextIcon } from "./NextIcon";
-import { auth } from "../libs/firebaseApp";
+import { auth } from "../libs/firebase";
 
 export function Navbar() {
   const { user } = useContext(UserContext);

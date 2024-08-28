@@ -19,69 +19,79 @@ import type { AxiosError } from "axios";
 
 import { UserContext } from "../context/User";
 import { Navbar } from "../components/Navbar";
-import { auth } from "../libs/firebaseApp";
 import { axiosInstance } from "../libs/axios";
-import { getUserIDToken } from "../utils";
-import type { SuccessResponse } from "../types/api";
 
-interface Province {
+interface User {
   id: string;
   name: string;
+  email: string;
+  address: {
+    city: string;
+  };
 }
 
 function Home() {
   const toast = useToast();
-  const [provinces, setProvinces] = useState<Province[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useContext(UserContext);
 
   useEffect(() => {
     async function getProvinces() {
-      // Get ID token
-      let idToken = "";
       try {
-        idToken = await getUserIDToken();
-      } catch (error) {
-        console.error(
-          new Error("Error when get user ID token: ", { cause: error })
+        const response = await axiosInstance.get<User[]>(
+          "https://jsonplaceholder.typicode.com/users"
         );
-        return;
-      }
 
-      // Get provinces
-      try {
-        const { data: provinceResponse } = await axiosInstance.get<
-          SuccessResponse<Province[]>
-        >("/api/province", {
-          headers: { Authorization: `Bearer ${idToken}` },
-        });
-        setProvinces(provinceResponse.data);
+        setUsers(
+          response.data.map((user) => {
+            return {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              address: user.address,
+            };
+          })
+        );
       } catch (err) {
         const error = err as AxiosError;
         if (error.response === undefined && error.request === undefined) {
+          console.error(
+            new Error(
+              "Error when get users. The error is caused by Axios Error."
+            )
+          );
+
           toast({
-            title: "Network Request Failed",
+            title: "Request Failed",
             description: "Something is wrong with Axios.",
             status: "error",
             position: "top-right",
           });
         } else if (error.response === undefined) {
+          console.error(
+            new Error(
+              "Error when get users. The error is caused by Network Error."
+            )
+          );
+
           toast({
-            title: "Network Request Failed",
+            title: "Request Failed",
             description: "Something is wrong with the Network.",
             status: "error",
             position: "top-right",
           });
         } else {
-          if (error.response.status === 401) {
-            try {
-              await auth.signOut();
-            } catch (error) {
-              console.error(new Error("Error when logout: ", { cause: error }));
-            }
-          } else if (error.response.status >= 500) {
+          if (error.response.status >= 500) {
+            console.error(
+              new Error(
+                "Error when get users. The error is caused by Server Error.",
+                { cause: error.response.data }
+              )
+            );
+
             toast({
-              title: "Network Request Failed",
+              title: "Request Failed",
               description: "Something is wrong with the Server.",
               status: "error",
               position: "top-right",
@@ -111,8 +121,6 @@ function Home() {
         <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit.</Text>
 
         <TableContainer
-          maxWidth="768px"
-          marginX="auto"
           marginTop="32px"
           paddingX="24px"
           paddingY="16px"
@@ -121,21 +129,25 @@ function Home() {
         >
           <Table
             colorScheme={
-              isLoading === false && provinces.length === 0 ? "red" : "gray"
+              isLoading === false && users.length === 0 ? "red" : "gray"
             }
             variant="striped"
           >
-            <TableCaption>Provinces of Indonesia</TableCaption>
+            <TableCaption>Fake Users of {`{JSON}`} Placeholder</TableCaption>
             <Thead>
               <Tr>
-                <Th>Province ID</Th>
-                <Th>Province Name</Th>
+                <Th>ID</Th>
+                <Th>Name</Th>
+                <Th>Email</Th>
+                <Th>City</Th>
               </Tr>
             </Thead>
 
-            {isLoading === false && provinces.length === 0 ? (
+            {isLoading === false && users.length === 0 ? (
               <Tbody>
                 <Tr>
+                  <Td>Error Occured</Td>
+                  <Td>Error Occured</Td>
                   <Td>Error Occured</Td>
                   <Td>Error Occured</Td>
                 </Tr>
@@ -145,11 +157,13 @@ function Home() {
                 {isLoading ? (
                   <TableSkeleton />
                 ) : (
-                  provinces.map((province) => {
+                  users.map((province) => {
                     return (
                       <Tr key={province.id}>
                         <Td>{province.id}</Td>
                         <Td>{province.name}</Td>
+                        <Td>{province.email}</Td>
+                        <Td>{province.address.city}</Td>
                       </Tr>
                     );
                   })
@@ -159,8 +173,10 @@ function Home() {
 
             <Tfoot>
               <Tr>
-                <Th>Province ID</Th>
-                <Th>Province Name</Th>
+                <Th>ID</Th>
+                <Th>Name</Th>
+                <Th>Email</Th>
+                <Th>City</Th>
               </Tr>
             </Tfoot>
           </Table>
@@ -180,9 +196,6 @@ function TableSkeleton() {
         <Td backgroundColor="transparent" padding="0px">
           <Skeleton width="100%" height="40px"></Skeleton>
         </Td>
-      </Tr>
-
-      <Tr>
         <Td backgroundColor="transparent" padding="0px">
           <Skeleton width="100%" height="40px"></Skeleton>
         </Td>
@@ -192,6 +205,27 @@ function TableSkeleton() {
       </Tr>
 
       <Tr>
+        <Td backgroundColor="transparent" padding="0px">
+          <Skeleton width="100%" height="40px"></Skeleton>
+        </Td>
+        <Td backgroundColor="transparent" padding="0px">
+          <Skeleton width="100%" height="40px"></Skeleton>
+        </Td>
+        <Td backgroundColor="transparent" padding="0px">
+          <Skeleton width="100%" height="40px"></Skeleton>
+        </Td>
+        <Td backgroundColor="transparent" padding="0px">
+          <Skeleton width="100%" height="40px"></Skeleton>
+        </Td>
+      </Tr>
+
+      <Tr>
+        <Td backgroundColor="transparent" padding="0px">
+          <Skeleton width="100%" height="40px"></Skeleton>
+        </Td>
+        <Td backgroundColor="transparent" padding="0px">
+          <Skeleton width="100%" height="40px"></Skeleton>
+        </Td>
         <Td backgroundColor="transparent" padding="0px">
           <Skeleton width="100%" height="40px"></Skeleton>
         </Td>
