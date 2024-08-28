@@ -3,6 +3,7 @@ import type { AxiosError } from "axios";
 
 import { authenticateRequest } from "../../utils/authenticateRequest";
 import { axiosInstance } from "../../libs/axios";
+import { inspect } from "util";
 import type { FailedResponse, SuccessResponse } from "../../types/api";
 
 interface Province {
@@ -56,15 +57,23 @@ export default async function handler(
       console.error(new Error("Axios Error: ", { cause: error }));
       res.status(500).json({ status: "failed", message: "Server Error" });
     } else if (error.response === undefined) {
-      console.error(new Error("Network Error: ", { cause: error }));
+      console.error(new Error("Network Error: ", { cause: error.request }));
       res
         .status(503)
         .json({ status: "failed", message: "Service Unavailable" });
     } else {
       if (error.response.status === 400) {
-        console.error(new Error("Invalid Key: ", { cause: error }));
+        console.error(
+          new Error("Bad Request: ", {
+            cause: inspect(error.response.data, { depth: null }),
+          })
+        );
       } else if (error.response.status >= 500) {
-        console.error(new Error("Server Error: ", { cause: error }));
+        console.error(
+          new Error("Server Error: ", {
+            cause: inspect(error.response.data, { depth: null }),
+          })
+        );
       }
       res.status(500).json({ status: "failed", message: "Server Error" });
     }

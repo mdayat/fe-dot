@@ -8,11 +8,12 @@ import {
   useEffect,
   useState,
 } from "react";
+import { Box, Spinner } from "@chakra-ui/react";
+
 import { auth } from "../libs/firebaseApp";
 
 interface User {
   name: string;
-  email: string;
   avatarURL: string;
 }
 
@@ -31,7 +32,6 @@ function UserProvider({ children }: PropsWithChildren) {
       if (user !== null) {
         setUser({
           name: user.displayName ?? "John Doe",
-          email: user.email ?? "",
           avatarURL: user.photoURL ?? "",
         });
       } else {
@@ -43,7 +43,19 @@ function UserProvider({ children }: PropsWithChildren) {
   }, []);
 
   if (isLoading) {
-    return <h1 className="text-red-600 text-2xl text-center">LOADING...</h1>;
+    return (
+      <Box width="100vw" height="100vh">
+        <Spinner
+          size="xl"
+          thickness="4px"
+          color="teal.600"
+          position="absolute"
+          top="50%"
+          transform="translate(-50%,-50%)"
+          left="50%"
+        />
+      </Box>
+    );
   }
 
   if (user === null && router.pathname !== "/login") {
