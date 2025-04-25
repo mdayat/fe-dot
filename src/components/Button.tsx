@@ -20,7 +20,13 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
 }
 
-const StyledButton = styled.button<ButtonProps>`
+const StyledButton = styled.button<{
+  $shape: ButtonShape;
+  $size: ButtonSize;
+  $color: ButtonColor;
+  $fullWidth: boolean;
+  $isLoading: boolean;
+}>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -30,10 +36,10 @@ const StyledButton = styled.button<ButtonProps>`
   transition: all 0.2s ease-in-out;
   position: relative;
 
-  width: ${(props) => (props.fullWidth ? "100%" : "auto")};
+  width: ${(props) => (props.$fullWidth ? "100%" : "auto")};
 
   ${(props) => {
-    switch (props.shape) {
+    switch (props.$shape) {
       case "pill":
         return css`
           border-radius: 9999px;
@@ -51,7 +57,7 @@ const StyledButton = styled.button<ButtonProps>`
   }}
 
   ${(props) => {
-    switch (props.size) {
+    switch (props.$size) {
       case "medium":
         return css`
           padding: 8px 16px;
@@ -69,7 +75,7 @@ const StyledButton = styled.button<ButtonProps>`
   }}
   
   ${(props) => {
-    switch (props.color) {
+    switch (props.$color) {
       case "secondary":
         return css`
           background-color: #6c757d;
@@ -128,7 +134,7 @@ const StyledButton = styled.button<ButtonProps>`
   }
 
   ${(props) =>
-    props.isLoading &&
+    props.$isLoading &&
     css`
       font-style: italic;
       opacity: 0.65;
@@ -147,14 +153,14 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <StyledButton
-      shape={shape}
-      size={size}
-      color={color}
-      fullWidth={fullWidth}
-      isLoading={isLoading}
+      $shape={shape}
+      $size={size}
+      $color={color}
+      $fullWidth={fullWidth}
+      $isLoading={isLoading}
       {...props}
     >
-      {isLoading ? "Loading" : children}
+      {children}
     </StyledButton>
   );
 };

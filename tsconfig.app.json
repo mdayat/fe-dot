@@ -28,7 +28,8 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "forceConsistentCasingInFileNames": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "exactOptionalPropertyTypes": true
   },
 
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/index.tsx"]
