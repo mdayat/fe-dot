@@ -1,6 +1,6 @@
 import { useRouteError } from "react-router";
 
-function ErrorBoundaryView() {
+function ErrorBoundary() {
   const error = useRouteError();
   let errMsg = "";
   if (error instanceof Error) {
@@ -28,4 +28,4 @@ function ErrorBoundaryView() {
   );
 }
 
-export { ErrorBoundaryView };
+export { ErrorBoundary };

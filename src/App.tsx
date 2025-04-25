@@ -1,9 +1,15 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import { lazy, Suspense } from "react";
 
-const ErrorBoundaryView = lazy(() =>
-  import("@components/ErrorBoundaryView").then(({ ErrorBoundaryView }) => ({
-    default: ErrorBoundaryView,
+const Home = lazy(() =>
+  import("./pages/home").then(({ Home }) => ({
+    default: Home,
+  }))
+);
+
+const ErrorBoundary = lazy(() =>
+  import("@components/ErrorBoundary").then(({ ErrorBoundary }) => ({
+    default: ErrorBoundary,
   }))
 );
 
@@ -19,7 +25,7 @@ function App() {
           // }
           errorElement={
             <Suspense fallback={<></>}>
-              <ErrorBoundaryView />
+              <ErrorBoundary />
             </Suspense>
           }
         >
@@ -27,7 +33,7 @@ function App() {
             path="/"
             element={
               <Suspense fallback={<></>}>
-                <h1>Hello Login Page</h1>
+                <Home />
               </Suspense>
             }
           />
