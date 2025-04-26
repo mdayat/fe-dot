@@ -1,4 +1,5 @@
 import { TaskCard } from "@components/TaskCard";
+import { Button } from "@components/Button";
 import { TaskCardSkeleton } from "@components/TaskCardSkeleton";
 import { TaskEmpty } from "@components/TaskEmpty";
 import { useState, useMemo } from "react";
@@ -37,22 +38,6 @@ const FilterContainer = styled.div`
   }
 `;
 
-// TODO:
-const FilterButton = styled.button<{ $active: boolean }>`
-  padding: 0.5rem 1rem;
-  background-color: ${(props) => (props.$active ? "#3182ce" : "#edf2f7")};
-  color: ${(props) => (props.$active ? "white" : "#4a5568")};
-  border: none;
-  border-radius: 0.375rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: ${(props) => (props.$active ? "#2c5282" : "#e2e8f0")};
-  }
-`;
-
 const TaskGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr;
@@ -64,7 +49,7 @@ const TaskGrid = styled.div`
 `;
 
 function Home() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<"all" | "finished" | "unfinished">(
     "all"
@@ -89,24 +74,24 @@ function Home() {
       <Title>Task List</Title>
 
       <FilterContainer>
-        <FilterButton
-          $active={filter === "all"}
+        <Button
+          color={filter === "all" ? "primary" : "secondary"}
           onClick={() => setFilter("all")}
         >
           All Tasks
-        </FilterButton>
-        <FilterButton
-          $active={filter === "finished"}
+        </Button>
+        <Button
+          color={filter === "finished" ? "success" : "secondary"}
           onClick={() => setFilter("finished")}
         >
           Finished
-        </FilterButton>
-        <FilterButton
-          $active={filter === "unfinished"}
+        </Button>
+        <Button
+          color={filter === "unfinished" ? "warning" : "secondary"}
           onClick={() => setFilter("unfinished")}
         >
           Unfinished
-        </FilterButton>
+        </Button>
       </FilterContainer>
 
       {isLoading ? (
@@ -119,7 +104,7 @@ function Home() {
       ) : filteredTasks.length > 0 ? (
         <TaskGrid>
           {filteredTasks.map((task) => (
-            <TaskCard key={task.id} task={task}></TaskCard>
+            <TaskCard key={task.id} task={task} setTasks={setTasks} />
           ))}
         </TaskGrid>
       ) : (

@@ -11,7 +11,7 @@ type ButtonColor =
   | "warning"
   | "info";
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   shape?: ButtonShape;
   size?: ButtonSize;
@@ -142,7 +142,7 @@ const StyledButton = styled.button<{
     `}
 `;
 
-export const Button = ({
+function Button({
   children,
   shape = "rounded",
   size = "small",
@@ -150,7 +150,7 @@ export const Button = ({
   fullWidth = false,
   isLoading = false,
   ...props
-}: ButtonProps) => {
+}: ButtonProps) {
   return (
     <StyledButton
       $shape={shape}
@@ -163,4 +163,6 @@ export const Button = ({
       {children}
     </StyledButton>
   );
-};
+}
+
+export { Button };
