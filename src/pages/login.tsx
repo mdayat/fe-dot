@@ -152,7 +152,7 @@ function Login() {
 
         <SwitchPageText>
           Don't have an account?&nbsp;
-          <SwitchPageLink onClick={() => navigate("/register")}>
+          <SwitchPageLink onClick={() => navigate("/product/register")}>
             Register
           </SwitchPageLink>
         </SwitchPageText>

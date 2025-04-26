@@ -165,7 +165,7 @@ function Registration() {
 
         <SwitchPageText>
           Already have an account?&nbsp;
-          <SwitchPageLink onClick={() => navigate("/login")}>
+          <SwitchPageLink onClick={() => navigate("/product/login")}>
             Log In
           </SwitchPageLink>
         </SwitchPageText>
