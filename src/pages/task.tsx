@@ -29,6 +29,7 @@ const ContainerHeader = styled.div`
 const Title = styled.h1`
   color: #2d3748;
   font-size: 2rem;
+  font-weight: 600;
 `;
 
 const TaskCreateButton = styled(Button)`
@@ -61,7 +62,7 @@ const TaskGrid = styled.div`
   }
 `;
 
-function Task() {
+function TaskPage() {
   const [opened, setOpened] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<"all" | "finished" | "unfinished">(
@@ -138,4 +139,4 @@ function Task() {
   );
 }
 
-export { Task };
+export { TaskPage };

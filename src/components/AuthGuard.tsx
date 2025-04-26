@@ -15,22 +15,23 @@ function AuthGuard() {
       return;
     }
 
-    if (selectedApp === "product") {
-      if (
-        !loggedInUser &&
-        location.pathname !== "/product/login" &&
-        location.pathname !== "/product/register"
-      ) {
-        navigate("/product/login");
-      } else if (
-        loggedInUser &&
-        (location.pathname === "/product/login" ||
-          location.pathname !== "/product/register")
-      ) {
-        navigate("/product");
-      }
-    } else {
+    if (selectedApp === "task") {
       navigate("/task");
+      return;
+    }
+
+    if (
+      !loggedInUser &&
+      location.pathname !== "/product/login" &&
+      location.pathname !== "/product/register"
+    ) {
+      navigate("/product/login");
+    } else if (
+      loggedInUser &&
+      (location.pathname === "/product/login" ||
+        location.pathname !== "/product/register")
+    ) {
+      navigate("/product");
     }
   }, [location.pathname, loggedInUser, navigate, selectedApp, showOnboarding]);
 

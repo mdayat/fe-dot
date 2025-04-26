@@ -5,9 +5,15 @@ import { AuthProvider } from "@contexts/AuthProvider";
 import { AuthGuard } from "@components/AuthGuard";
 import { OnboardingProvider } from "@contexts/OnboardingProvider";
 
-const Task = lazy(() =>
-  import("./pages/task").then(({ Task }) => ({
-    default: Task,
+const TaskPage = lazy(() =>
+  import("./pages/task").then(({ TaskPage }) => ({
+    default: TaskPage,
+  }))
+);
+
+const ProductPage = lazy(() =>
+  import("./pages/product").then(({ ProductPage }) => ({
+    default: ProductPage,
   }))
 );
 
@@ -52,7 +58,7 @@ function App() {
                 path="/task"
                 element={
                   <Suspense fallback={<></>}>
-                    <Task />
+                    <TaskPage />
                   </Suspense>
                 }
               />
@@ -61,7 +67,7 @@ function App() {
                 path="/product"
                 element={
                   <Suspense fallback={<></>}>
-                    <>PROD</>
+                    <ProductPage />
                   </Suspense>
                 }
               />
