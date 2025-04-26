@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { Button } from "./Button";
 import type { Product } from "../pages/product";
+import { useState } from "react";
+import { ProductDetailModal } from "./ProductDetailModal";
 
 const StyledProductCard = styled.div`
   border-radius: 0.75rem;
@@ -49,8 +51,9 @@ const Badge = styled.span<{ $inStock: boolean }>`
   border-radius: 9999px;
   font-size: 0.75rem;
   font-weight: 600;
-  background-color: ${(props) => (props.$inStock ? "#f59e0b" : "#f56565")};
-  color: white;
+  background-color: ${(props) =>
+    props.$inStock ? "rgba(16, 185, 129, 0.1)" : "rgba(239, 68, 68, 0.1)"};
+  color: ${(props) => (props.$inStock ? "#10b981" : "#ef4444")};
   white-space: nowrap;
 `;
 
@@ -79,33 +82,43 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product }: ProductCardProps) {
+  const [opened, setOpened] = useState(false);
+
   return (
-    <StyledProductCard key={product.id}>
-      <ProductImage>📦</ProductImage>
-      <ProductInfo>
-        <ProductInfoHeader>
-          <ProductName>{product.name}</ProductName>
-          <Badge $inStock={product.inStock}>
-            {product.inStock ? "In Stock" : "Out of Stock"}
-          </Badge>
-        </ProductInfoHeader>
+    <>
+      <StyledProductCard key={product.id}>
+        <ProductImage>📦</ProductImage>
+        <ProductInfo>
+          <ProductInfoHeader>
+            <ProductName>{product.name}</ProductName>
+            <Badge $inStock={product.inStock}>
+              {product.inStock ? "In Stock" : "Out of Stock"}
+            </Badge>
+          </ProductInfoHeader>
 
-        <div>
-          <ProductPrice>${product.price.toFixed(2)}</ProductPrice>
-          <ProductDescription>{product.description}</ProductDescription>
-        </div>
+          <div>
+            <ProductPrice>${product.price.toFixed(2)}</ProductPrice>
+            <ProductDescription>{product.description}</ProductDescription>
+          </div>
 
-        <ActionBar>
-          <Button type="button" color="warning">
-            Add to Cart
-          </Button>
+          <ActionBar>
+            <Button type="button" color="warning">
+              Add to Cart
+            </Button>
 
-          <Button type="button" color="secondary">
-            View Detail
-          </Button>
-        </ActionBar>
-      </ProductInfo>
-    </StyledProductCard>
+            <Button
+              onClick={() => setOpened(true)}
+              type="button"
+              color="secondary"
+            >
+              View Detail
+            </Button>
+          </ActionBar>
+        </ProductInfo>
+      </StyledProductCard>
+
+      {opened && <ProductDetailModal setOpened={setOpened} product={product} />}
+    </>
   );
 }
 
