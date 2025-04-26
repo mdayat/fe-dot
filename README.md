@@ -5,8 +5,8 @@ Follow these steps to set up and run the application locally on `3000` port:
 1. Clone the repository
 
    ```bash
-   git clone https://github.com/mdayat/fe_dot.git
-   cd fe_dot
+   git clone https://github.com/mdayat/fe-dot.git
+   cd fe-dot
    ```
 
 2. Install deps and run:
