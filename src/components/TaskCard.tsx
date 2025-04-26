@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import type { Task } from "../pages/home";
+import type { Task } from "../pages/task";
 import { Button } from "./Button";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import { TaskDeleteModal } from "./TaskDeleteModal";

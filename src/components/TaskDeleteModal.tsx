@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Button } from "./Button";
 import type { Dispatch, SetStateAction } from "react";
-import type { Task } from "../pages/home";
+import type { Task } from "../pages/task";
 
 const ModalOverlay = styled.div`
   position: fixed;

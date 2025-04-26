@@ -7,7 +7,7 @@ import {
 import styled from "styled-components";
 import { Button } from "./Button";
 import { v4 as uuidv4 } from "uuid";
-import type { Task } from "../pages/home";
+import type { Task } from "../pages/task";
 
 const ModalOverlay = styled.div`
   position: fixed;

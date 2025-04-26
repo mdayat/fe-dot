@@ -61,7 +61,7 @@ const TaskGrid = styled.div`
   }
 `;
 
-function Home() {
+function Task() {
   const [opened, setOpened] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<"all" | "finished" | "unfinished">(
@@ -138,4 +138,4 @@ function Home() {
   );
 }
 
-export { Home };
+export { Task };

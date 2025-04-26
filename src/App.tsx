@@ -3,10 +3,11 @@ import { lazy, Suspense } from "react";
 import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "@contexts/AuthProvider";
 import { AuthGuard } from "@components/AuthGuard";
+import { OnboardingProvider } from "@contexts/OnboardingProvider";
 
-const Home = lazy(() =>
-  import("./pages/home").then(({ Home }) => ({
-    default: Home,
+const Task = lazy(() =>
+  import("./pages/task").then(({ Task }) => ({
+    default: Task,
   }))
 );
 
@@ -32,51 +33,62 @@ function App() {
   return (
     <BrowserRouter>
       <ToastContainer />
-      <AuthProvider>
-        <Routes>
-          <Route
-            element={
-              <Suspense fallback={<></>}>
-                <AuthGuard />
-              </Suspense>
-            }
-            errorElement={
-              <Suspense fallback={<></>}>
-                <ErrorBoundary />
-              </Suspense>
-            }
-          >
+      <OnboardingProvider>
+        <AuthProvider>
+          <Routes>
             <Route
-              path="/"
               element={
                 <Suspense fallback={<></>}>
-                  <Home />
+                  <AuthGuard />
                 </Suspense>
               }
-            />
-
-            <Route
-              path="/login"
-              element={
+              errorElement={
                 <Suspense fallback={<></>}>
-                  <Login />
+                  <ErrorBoundary />
                 </Suspense>
               }
-            />
+            >
+              <Route
+                path="/task"
+                element={
+                  <Suspense fallback={<></>}>
+                    <Task />
+                  </Suspense>
+                }
+              />
 
-            <Route
-              path="/register"
-              element={
-                <Suspense fallback={<></>}>
-                  <Registration />
-                </Suspense>
-              }
-            />
-          </Route>
+              <Route
+                path="/product"
+                element={
+                  <Suspense fallback={<></>}>
+                    <>PROD</>
+                  </Suspense>
+                }
+              />
 
-          <Route path="*" element={<Navigate to="/login" replace />} />
-        </Routes>
-      </AuthProvider>
+              <Route
+                path="/product/login"
+                element={
+                  <Suspense fallback={<></>}>
+                    <Login />
+                  </Suspense>
+                }
+              />
+
+              <Route
+                path="/product/register"
+                element={
+                  <Suspense fallback={<></>}>
+                    <Registration />
+                  </Suspense>
+                }
+              />
+            </Route>
+
+            <Route path="*" element={<Navigate to="/task" replace />} />
+          </Routes>
+        </AuthProvider>
+      </OnboardingProvider>
     </BrowserRouter>
   );
 }
