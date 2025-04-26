@@ -64,6 +64,7 @@ const Input = styled.input`
 
   &::placeholder {
     color: #aaa;
+    font-family: "Poppins", sans-serif;
   }
 `;
 
@@ -91,11 +92,10 @@ function Registration() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (event: FormEvent) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     const result = userSchema
       .pick({ email: true, password: true, name: true })
@@ -107,7 +107,6 @@ function Registration() {
       return;
     }
 
-    setIsLoading(true);
     userManager.register({ email, password, name: username });
     toast("Account created, please login to continue", {
       type: "success",
@@ -156,9 +155,7 @@ function Registration() {
             />
           </FormGroup>
 
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Creating Account..." : "Register"}
-          </Button>
+          <Button type="submit">Register</Button>
         </Form>
 
         <SwitchPageText>

@@ -64,6 +64,7 @@ const Input = styled.input`
 
   &::placeholder {
     color: #aaa;
+    font-family: "Poppins", sans-serif;
   }
 `;
 
@@ -91,9 +92,8 @@ function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (event: FormEvent) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     const result = userSchema
       .pick({ email: true, password: true })
@@ -105,15 +105,12 @@ function Login() {
       return;
     }
 
-    setIsLoading(true);
     try {
       userManager.login({ email, password });
       toast("Login successful", { type: "success", theme: "colored" });
     } catch (error) {
       toast("User not found", { type: "error", theme: "colored" });
       console.error(error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -146,9 +143,7 @@ function Login() {
             />
           </FormGroup>
 
-          <Button isLoading={isLoading} type="submit">
-            {isLoading ? "Logging in..." : "Log In"}
-          </Button>
+          <Button type="submit">Log In</Button>
         </Form>
 
         <SwitchPageText>

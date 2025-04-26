@@ -4,6 +4,7 @@ import { Button } from "./Button";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import { TaskDeleteModal } from "./TaskDeleteModal";
 import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
+import { TaskModal } from "./TaskModal";
 
 const StyledTaskCard = styled.div`
   background-color: white;
@@ -97,7 +98,8 @@ interface TaskCardProps {
 }
 
 function TaskCard({ task, setTasks }: TaskCardProps) {
-  const [opened, setOpened] = useState(false);
+  const [deleteModalOpened, setDeleteModalOpened] = useState(false);
+  const [editModalOpened, setEditModalOpened] = useState(false);
 
   const toggleTaskCompletion = () => {
     setTasks((tasks) =>
@@ -130,21 +132,38 @@ function TaskCard({ task, setTasks }: TaskCardProps) {
         </TaskContent>
 
         <TaskFooter>
-          <Button color="primary" size="small" onClick={() => setOpened(true)}>
+          <Button
+            type="button"
+            color="primary"
+            onClick={() => setEditModalOpened(true)}
+          >
             Edit
           </Button>
 
-          <Button color="danger" size="small" onClick={() => setOpened(true)}>
+          <Button
+            type="button"
+            color="danger"
+            onClick={() => setDeleteModalOpened(true)}
+          >
             Delete
           </Button>
         </TaskFooter>
       </StyledTaskCard>
 
-      {opened && (
+      {deleteModalOpened && (
         <TaskDeleteModal
           task={task}
           setTasks={setTasks}
-          setOpened={setOpened}
+          setOpened={setDeleteModalOpened}
+        />
+      )}
+
+      {editModalOpened && (
+        <TaskModal
+          type="edit"
+          task={task}
+          setTasks={setTasks}
+          setOpened={setEditModalOpened}
         />
       )}
     </>

@@ -1,16 +1,16 @@
 import { TaskCard } from "@components/TaskCard";
 import { Button } from "@components/Button";
-import { TaskCardSkeleton } from "@components/TaskCardSkeleton";
 import { TaskEmpty } from "@components/TaskEmpty";
 import { useState, useMemo } from "react";
 import styled from "styled-components";
+import { PlusIcon } from "@radix-ui/react-icons";
+import { TaskModal } from "@components/TaskModal";
 
 export interface Task {
   id: string;
   title: string;
   description: string;
   finished: boolean;
-  created_at: string;
 }
 
 const Container = styled.div`
@@ -19,10 +19,23 @@ const Container = styled.div`
   padding: 2rem;
 `;
 
+const ContainerHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+`;
+
 const Title = styled.h1`
   color: #2d3748;
   font-size: 2rem;
-  margin-bottom: 2rem;
+`;
+
+const TaskCreateButton = styled(Button)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
 `;
 
 const FilterContainer = styled.div`
@@ -49,7 +62,7 @@ const TaskGrid = styled.div`
 `;
 
 function Home() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [opened, setOpened] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<"all" | "finished" | "unfinished">(
     "all"
@@ -71,22 +84,40 @@ function Home() {
 
   return (
     <Container>
-      <Title>Task List</Title>
+      <ContainerHeader>
+        <Title>Task List</Title>
+        <TaskCreateButton
+          onClick={() => setOpened(true)}
+          type="button"
+          color="primary"
+        >
+          Create <PlusIcon />
+        </TaskCreateButton>
+      </ContainerHeader>
+
+      {opened && (
+        <TaskModal type="create" setOpened={setOpened} setTasks={setTasks} />
+      )}
 
       <FilterContainer>
         <Button
+          type="button"
           color={filter === "all" ? "primary" : "secondary"}
           onClick={() => setFilter("all")}
         >
           All Tasks
         </Button>
+
         <Button
+          type="button"
           color={filter === "finished" ? "success" : "secondary"}
           onClick={() => setFilter("finished")}
         >
           Finished
         </Button>
+
         <Button
+          type="button"
           color={filter === "unfinished" ? "warning" : "secondary"}
           onClick={() => setFilter("unfinished")}
         >
@@ -94,14 +125,7 @@ function Home() {
         </Button>
       </FilterContainer>
 
-      {isLoading ? (
-        <TaskGrid>
-          <TaskCardSkeleton />
-          <TaskCardSkeleton />
-          <TaskCardSkeleton />
-          <TaskCardSkeleton />
-        </TaskGrid>
-      ) : filteredTasks.length > 0 ? (
+      {filteredTasks.length > 0 ? (
         <TaskGrid>
           {filteredTasks.map((task) => (
             <TaskCard key={task.id} task={task} setTasks={setTasks} />

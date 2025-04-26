@@ -20,8 +20,13 @@ const ModalContent = styled.div`
   background: white;
   border-radius: 0.5rem;
   padding: 1.5rem;
+  width: 100%;
   max-width: 384px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 480px) {
+    margin: 0 1rem;
+  }
 `;
 
 const ModalTitle = styled.h3`
@@ -33,6 +38,7 @@ const ModalTitle = styled.h3`
 
 const ModalBody = styled.div`
   margin-bottom: 1.5rem;
+  line-height: 1.25;
 `;
 
 const ModalFooter = styled.div`
@@ -49,21 +55,23 @@ interface TaskDeleteModalProps {
 
 function TaskDeleteModal({ task, setOpened, setTasks }: TaskDeleteModalProps) {
   return (
-    <ModalOverlay onClick={() => setOpened(false)}>
+    <ModalOverlay>
       <ModalContent>
         <ModalTitle>Confirm Deletion</ModalTitle>
 
-        <ModalBody>
-          Are you sure you want to delete this task? This action cannot be
-          undone.
-        </ModalBody>
+        <ModalBody>Are you sure you want to delete this task?</ModalBody>
 
         <ModalFooter>
-          <Button color="secondary" onClick={() => setOpened(false)}>
+          <Button
+            type="button"
+            color="secondary"
+            onClick={() => setOpened(false)}
+          >
             Cancel
           </Button>
 
           <Button
+            type="button"
             color="danger"
             onClick={() => {
               setOpened(false);
