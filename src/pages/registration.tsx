@@ -2,8 +2,8 @@ import { Button } from "@components/Button";
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
-import { userManager, userSchema } from "../dummy";
 import { toast } from "react-toastify";
+import { useAuthContext, userSchema } from "@contexts/AuthProvider";
 
 const PageContainer = styled.div`
   display: flex;
@@ -94,6 +94,7 @@ function Registration() {
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+  const { register } = useAuthContext();
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -107,11 +108,15 @@ function Registration() {
       return;
     }
 
-    userManager.register({ email, password, name: username });
+    register({ email, password, name: username });
+    setUsername("");
+    setEmail("");
+    setPassword("");
     toast("Account created, please login to continue", {
       type: "success",
       theme: "colored",
     });
+    navigate("/login", { replace: true });
   };
 
   return (

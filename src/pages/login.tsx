@@ -3,7 +3,7 @@ import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import styled from "styled-components";
-import { userManager, userSchema } from "../dummy";
+import { useAuthContext, userSchema } from "@contexts/AuthProvider";
 
 const PageContainer = styled.div`
   display: flex;
@@ -89,9 +89,11 @@ const SwitchPageLink = styled.button`
 `;
 
 function Login() {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+  const { login } = useAuthContext();
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -106,8 +108,10 @@ function Login() {
     }
 
     try {
-      userManager.login({ email, password });
+      login({ email, password });
       toast("Login successful", { type: "success", theme: "colored" });
+      setEmail("");
+      setPassword("");
     } catch (error) {
       toast("User not found", { type: "error", theme: "colored" });
       console.error(error);

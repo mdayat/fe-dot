@@ -1,6 +1,8 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import { lazy, Suspense } from "react";
 import { ToastContainer } from "react-toastify";
+import { AuthProvider } from "@contexts/AuthProvider";
+import { AuthGuard } from "@components/AuthGuard";
 
 const Home = lazy(() =>
   import("./pages/home").then(({ Home }) => ({
@@ -30,49 +32,51 @@ function App() {
   return (
     <BrowserRouter>
       <ToastContainer />
-      <Routes>
-        <Route
-          // element={
-          //   <Suspense fallback={<></>}>
-          //     <ProtectedRouteView />
-          //   </Suspense>
-          // }
-          errorElement={
-            <Suspense fallback={<></>}>
-              <ErrorBoundary />
-            </Suspense>
-          }
-        >
+      <AuthProvider>
+        <Routes>
           <Route
-            path="/"
             element={
               <Suspense fallback={<></>}>
-                <Home />
+                <AuthGuard />
               </Suspense>
             }
-          />
-
-          <Route
-            path="/login"
-            element={
+            errorElement={
               <Suspense fallback={<></>}>
-                <Login />
+                <ErrorBoundary />
               </Suspense>
             }
-          />
+          >
+            <Route
+              path="/"
+              element={
+                <Suspense fallback={<></>}>
+                  <Home />
+                </Suspense>
+              }
+            />
 
-          <Route
-            path="/register"
-            element={
-              <Suspense fallback={<></>}>
-                <Registration />
-              </Suspense>
-            }
-          />
-        </Route>
+            <Route
+              path="/login"
+              element={
+                <Suspense fallback={<></>}>
+                  <Login />
+                </Suspense>
+              }
+            />
 
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
-      </Routes>
+            <Route
+              path="/register"
+              element={
+                <Suspense fallback={<></>}>
+                  <Registration />
+                </Suspense>
+              }
+            />
+          </Route>
+
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
