@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Button } from "./Button";
 import type { Product } from "../pages/product";
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { ProductDetailModal } from "./ProductDetailModal";
 
 const StyledProductCard = styled.div`
@@ -79,9 +79,11 @@ const ActionBar = styled.div`
 
 interface ProductCardProps {
   product: Product;
+  cartItems: Product[];
+  setCartItems: Dispatch<SetStateAction<Product[]>>;
 }
 
-function ProductCard({ product }: ProductCardProps) {
+function ProductCard({ product, cartItems, setCartItems }: ProductCardProps) {
   const [opened, setOpened] = useState(false);
 
   return (
@@ -102,7 +104,15 @@ function ProductCard({ product }: ProductCardProps) {
           </div>
 
           <ActionBar>
-            <Button type="button" color="warning">
+            <Button
+              disabled={
+                !product.inStock ||
+                !!cartItems.find((item) => item.id === product.id)
+              }
+              onClick={() => setCartItems((items) => [...items, product])}
+              type="button"
+              color="warning"
+            >
               Add to Cart
             </Button>
 
@@ -117,7 +127,14 @@ function ProductCard({ product }: ProductCardProps) {
         </ProductInfo>
       </StyledProductCard>
 
-      {opened && <ProductDetailModal setOpened={setOpened} product={product} />}
+      {opened && (
+        <ProductDetailModal
+          product={product}
+          cartItems={cartItems}
+          setCartItems={setCartItems}
+          setOpened={setOpened}
+        />
+      )}
     </>
   );
 }

@@ -1,3 +1,4 @@
+import { CartModal } from "@components/CartModal";
 import { ProductCard } from "@components/ProductCard";
 import { ProductEmpty } from "@components/ProductEmpty";
 import { useEffect, useState } from "react";
@@ -22,6 +23,37 @@ const Title = styled.h1`
   font-weight: 600;
 `;
 
+const CartButton = styled.button`
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #4a5568;
+  padding: 0.5rem;
+
+  &:hover {
+    color: #f59e0b;
+  }
+`;
+
+const CartBadge = styled.span`
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #f59e0b;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  height: 1.25rem;
+  min-width: 1.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0 0.25rem;
+`;
+
 const ProductGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr;
@@ -42,6 +74,8 @@ interface Product {
 
 function ProductPage() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [cartItems, setCartItems] = useState<Product[]>([]);
+  const [opened, setOpened] = useState(false);
 
   useEffect(() => {
     setProducts([
@@ -94,17 +128,29 @@ function ProductPage() {
     <Container>
       <ContainerHeader>
         <Title>Product Store</Title>
+
+        <CartButton onClick={() => setOpened(true)}>
+          🛒
+          {cartItems.length > 0 && <CartBadge>{cartItems.length}</CartBadge>}
+        </CartButton>
       </ContainerHeader>
 
       {products.length > 0 ? (
         <ProductGrid>
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard
+              key={product.id}
+              product={product}
+              cartItems={cartItems}
+              setCartItems={setCartItems}
+            />
           ))}
         </ProductGrid>
       ) : (
         <ProductEmpty />
       )}
+
+      {opened && <CartModal cartItems={cartItems} setOpened={setOpened} />}
     </Container>
   );
 }

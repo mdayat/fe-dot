@@ -137,10 +137,17 @@ const ProductDescription = styled.p`
 
 interface ProductDetailModalProps {
   product: Product;
+  cartItems: Product[];
   setOpened: Dispatch<SetStateAction<boolean>>;
+  setCartItems: Dispatch<SetStateAction<Product[]>>;
 }
 
-function ProductDetailModal({ product, setOpened }: ProductDetailModalProps) {
+function ProductDetailModal({
+  product,
+  cartItems,
+  setCartItems,
+  setOpened,
+}: ProductDetailModalProps) {
   return (
     <ModalOverlay>
       <ModalContainer>
@@ -166,7 +173,15 @@ function ProductDetailModal({ product, setOpened }: ProductDetailModalProps) {
 
             <ProductDescription>{product.description}</ProductDescription>
 
-            <Button type="button" color="warning">
+            <Button
+              disabled={
+                !product.inStock ||
+                !!cartItems.find((item) => item.id === product.id)
+              }
+              onClick={() => setCartItems((items) => [...items, product])}
+              type="button"
+              color="warning"
+            >
               Add to Cart
             </Button>
           </ProductInfoContainer>
